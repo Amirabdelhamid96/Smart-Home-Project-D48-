@@ -1,0 +1,718 @@
+
+LCD_2.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000334  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  00000388  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  00000388  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000003b8  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000090  00000000  00000000  000003f4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000ccc  00000000  00000000  00000484  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000725  00000000  00000000  00001150  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   000007c0  00000000  00000000  00001875  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000118  00000000  00000000  00002038  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000003e5  00000000  00000000  00002150  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    0000064c  00000000  00000000  00002535  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000070  00000000  00000000  00002b81  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 8f 01 	call	0x31e	; 0x31e <main>
+  64:	0c 94 98 01 	jmp	0x330	; 0x330 <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <keypad_init>:
+	// 4rows p0 p1 p2 p3    output power
+	//columns p4 p5 p6 p7   input  reading pin
+	
+	
+	///////////////////////  output pins //////////////////////////////
+	setbit(keypad_out_dir,0);    //DDRA
+  6c:	8a b3       	in	r24, 0x1a	; 26
+  6e:	81 60       	ori	r24, 0x01	; 1
+  70:	8a bb       	out	0x1a, r24	; 26
+	setbit(keypad_out_dir,1);
+  72:	8a b3       	in	r24, 0x1a	; 26
+  74:	82 60       	ori	r24, 0x02	; 2
+  76:	8a bb       	out	0x1a, r24	; 26
+	setbit(keypad_out_dir,2);
+  78:	8a b3       	in	r24, 0x1a	; 26
+  7a:	84 60       	ori	r24, 0x04	; 4
+  7c:	8a bb       	out	0x1a, r24	; 26
+	setbit(keypad_out_dir,3);
+  7e:	8a b3       	in	r24, 0x1a	; 26
+  80:	88 60       	ori	r24, 0x08	; 8
+  82:	8a bb       	out	0x1a, r24	; 26
+	/////////////////// input pins /////////////////////////////////////
+	clearbit(keypad_in_dir,4);
+  84:	8a b3       	in	r24, 0x1a	; 26
+  86:	8f 7e       	andi	r24, 0xEF	; 239
+  88:	8a bb       	out	0x1a, r24	; 26
+	clearbit(keypad_in_dir,5);
+  8a:	8a b3       	in	r24, 0x1a	; 26
+  8c:	8f 7d       	andi	r24, 0xDF	; 223
+  8e:	8a bb       	out	0x1a, r24	; 26
+	clearbit(keypad_in_dir,6);
+  90:	8a b3       	in	r24, 0x1a	; 26
+  92:	8f 7b       	andi	r24, 0xBF	; 191
+  94:	8a bb       	out	0x1a, r24	; 26
+	clearbit(keypad_in_dir,7);
+  96:	8a b3       	in	r24, 0x1a	; 26
+  98:	8f 77       	andi	r24, 0x7F	; 127
+  9a:	8a bb       	out	0x1a, r24	; 26
+	///////////////// internal pull up resistor for input pins /////////////////////////////
+	//input power 
+	
+	setbit(keypad_in_port,4); // porta = 0000100  -- > pull up  input & port output
+  9c:	8b b3       	in	r24, 0x1b	; 27
+  9e:	80 61       	ori	r24, 0x10	; 16
+  a0:	8b bb       	out	0x1b, r24	; 27
+	setbit(keypad_in_port,5);
+  a2:	8b b3       	in	r24, 0x1b	; 27
+  a4:	80 62       	ori	r24, 0x20	; 32
+  a6:	8b bb       	out	0x1b, r24	; 27
+	setbit(keypad_in_port,6);
+  a8:	8b b3       	in	r24, 0x1b	; 27
+  aa:	80 64       	ori	r24, 0x40	; 64
+  ac:	8b bb       	out	0x1b, r24	; 27
+	setbit(keypad_in_port,7);// noise 
+  ae:	8b b3       	in	r24, 0x1b	; 27
+  b0:	80 68       	ori	r24, 0x80	; 128
+  b2:	8b bb       	out	0x1b, r24	; 27
+  b4:	08 95       	ret
+
+000000b6 <switch_output>:
+
+void switch_output(int x)
+{ 
+	//power loop function for rows 
+		
+	switch(x)
+  b6:	81 30       	cpi	r24, 0x01	; 1
+  b8:	91 05       	cpc	r25, r1
+  ba:	b9 f0       	breq	.+46     	; 0xea <switch_output+0x34>
+  bc:	1c f4       	brge	.+6      	; 0xc4 <switch_output+0xe>
+  be:	89 2b       	or	r24, r25
+  c0:	39 f0       	breq	.+14     	; 0xd0 <switch_output+0x1a>
+  c2:	08 95       	ret
+  c4:	82 30       	cpi	r24, 0x02	; 2
+  c6:	91 05       	cpc	r25, r1
+  c8:	e9 f0       	breq	.+58     	; 0x104 <switch_output+0x4e>
+  ca:	03 97       	sbiw	r24, 0x03	; 3
+  cc:	41 f1       	breq	.+80     	; 0x11e <switch_output+0x68>
+  ce:	08 95       	ret
+	{   // output r0 r1 r2 r3  high to low
+		case 0:
+		clearbit(keypad_out_port,0);  //r0 low
+  d0:	8b b3       	in	r24, 0x1b	; 27
+  d2:	8e 7f       	andi	r24, 0xFE	; 254
+  d4:	8b bb       	out	0x1b, r24	; 27
+		setbit(keypad_out_port,1);
+  d6:	8b b3       	in	r24, 0x1b	; 27
+  d8:	82 60       	ori	r24, 0x02	; 2
+  da:	8b bb       	out	0x1b, r24	; 27
+		setbit(keypad_out_port,2);
+  dc:	8b b3       	in	r24, 0x1b	; 27
+  de:	84 60       	ori	r24, 0x04	; 4
+  e0:	8b bb       	out	0x1b, r24	; 27
+		setbit(keypad_out_port,3);
+  e2:	8b b3       	in	r24, 0x1b	; 27
+  e4:	88 60       	ori	r24, 0x08	; 8
+  e6:	8b bb       	out	0x1b, r24	; 27
+		break;
+  e8:	08 95       	ret
+		case 1:
+		clearbit(keypad_out_port,1); // r1 low
+  ea:	8b b3       	in	r24, 0x1b	; 27
+  ec:	8d 7f       	andi	r24, 0xFD	; 253
+  ee:	8b bb       	out	0x1b, r24	; 27
+		setbit(keypad_out_port,0);
+  f0:	8b b3       	in	r24, 0x1b	; 27
+  f2:	81 60       	ori	r24, 0x01	; 1
+  f4:	8b bb       	out	0x1b, r24	; 27
+		setbit(keypad_out_port,2);
+  f6:	8b b3       	in	r24, 0x1b	; 27
+  f8:	84 60       	ori	r24, 0x04	; 4
+  fa:	8b bb       	out	0x1b, r24	; 27
+		setbit(keypad_out_port,3);
+  fc:	8b b3       	in	r24, 0x1b	; 27
+  fe:	88 60       	ori	r24, 0x08	; 8
+ 100:	8b bb       	out	0x1b, r24	; 27
+		break;
+ 102:	08 95       	ret
+		case 2:
+		clearbit(keypad_out_port,2); // r2 low
+ 104:	8b b3       	in	r24, 0x1b	; 27
+ 106:	8b 7f       	andi	r24, 0xFB	; 251
+ 108:	8b bb       	out	0x1b, r24	; 27
+		setbit(keypad_out_port,1);
+ 10a:	8b b3       	in	r24, 0x1b	; 27
+ 10c:	82 60       	ori	r24, 0x02	; 2
+ 10e:	8b bb       	out	0x1b, r24	; 27
+		setbit(keypad_out_port,0);
+ 110:	8b b3       	in	r24, 0x1b	; 27
+ 112:	81 60       	ori	r24, 0x01	; 1
+ 114:	8b bb       	out	0x1b, r24	; 27
+		setbit(keypad_out_port,3);
+ 116:	8b b3       	in	r24, 0x1b	; 27
+ 118:	88 60       	ori	r24, 0x08	; 8
+ 11a:	8b bb       	out	0x1b, r24	; 27
+		break;
+ 11c:	08 95       	ret
+		case 3:
+		clearbit(keypad_out_port,3); //r3 low
+ 11e:	8b b3       	in	r24, 0x1b	; 27
+ 120:	87 7f       	andi	r24, 0xF7	; 247
+ 122:	8b bb       	out	0x1b, r24	; 27
+		setbit(keypad_out_port,1);
+ 124:	8b b3       	in	r24, 0x1b	; 27
+ 126:	82 60       	ori	r24, 0x02	; 2
+ 128:	8b bb       	out	0x1b, r24	; 27
+		setbit(keypad_out_port,2);
+ 12a:	8b b3       	in	r24, 0x1b	; 27
+ 12c:	84 60       	ori	r24, 0x04	; 4
+ 12e:	8b bb       	out	0x1b, r24	; 27
+		setbit(keypad_out_port,0);
+ 130:	8b b3       	in	r24, 0x1b	; 27
+ 132:	81 60       	ori	r24, 0x01	; 1
+ 134:	8b bb       	out	0x1b, r24	; 27
+ 136:	08 95       	ret
+
+00000138 <get_key_value>:
+
+
+
+
+char get_key_value(void)
+{
+ 138:	cf 93       	push	r28
+	char key = notpressed; // 255 
+ 13a:	cf ef       	ldi	r28, 0xFF	; 255
+	
+	
+	while(key == notpressed)// key = '1' break condition 
+ 13c:	6c c0       	rjmp	.+216    	; 0x216 <get_key_value+0xde>
+	{
+		switch_output(0);
+ 13e:	80 e0       	ldi	r24, 0x00	; 0
+ 140:	90 e0       	ldi	r25, 0x00	; 0
+ 142:	0e 94 5b 00 	call	0xb6	; 0xb6 <switch_output>
+		if (readbit(keypad_in_pin,4)==0)// pull up power--> low 
+ 146:	cc 99       	sbic	0x19, 4	; 25
+ 148:	04 c0       	rjmp	.+8      	; 0x152 <get_key_value+0x1a>
+		{
+			key ='7';// char 
+			while(readbit(keypad_in_pin,4)==0);// skip loop infinte 
+ 14a:	cc 9b       	sbis	0x19, 4	; 25
+ 14c:	fe cf       	rjmp	.-4      	; 0x14a <get_key_value+0x12>
+	while(key == notpressed)// key = '1' break condition 
+	{
+		switch_output(0);
+		if (readbit(keypad_in_pin,4)==0)// pull up power--> low 
+		{
+			key ='7';// char 
+ 14e:	c7 e3       	ldi	r28, 0x37	; 55
+ 150:	11 c0       	rjmp	.+34     	; 0x174 <get_key_value+0x3c>
+			while(readbit(keypad_in_pin,4)==0);// skip loop infinte 
+			// there is no pressing anymore 
+		}
+		else if (readbit(keypad_in_pin,5)==0)
+ 152:	cd 99       	sbic	0x19, 5	; 25
+ 154:	04 c0       	rjmp	.+8      	; 0x15e <get_key_value+0x26>
+		{
+			key ='8';
+			while(readbit(keypad_in_pin,5)==0);
+ 156:	cd 9b       	sbis	0x19, 5	; 25
+ 158:	fe cf       	rjmp	.-4      	; 0x156 <get_key_value+0x1e>
+			while(readbit(keypad_in_pin,4)==0);// skip loop infinte 
+			// there is no pressing anymore 
+		}
+		else if (readbit(keypad_in_pin,5)==0)
+		{
+			key ='8';
+ 15a:	c8 e3       	ldi	r28, 0x38	; 56
+ 15c:	0b c0       	rjmp	.+22     	; 0x174 <get_key_value+0x3c>
+			while(readbit(keypad_in_pin,5)==0);
+		}
+		else if (readbit(keypad_in_pin,6)==0)
+ 15e:	ce 99       	sbic	0x19, 6	; 25
+ 160:	04 c0       	rjmp	.+8      	; 0x16a <get_key_value+0x32>
+		{
+			key ='9';
+			while(readbit(keypad_in_pin,6)==0);
+ 162:	ce 9b       	sbis	0x19, 6	; 25
+ 164:	fe cf       	rjmp	.-4      	; 0x162 <get_key_value+0x2a>
+			key ='8';
+			while(readbit(keypad_in_pin,5)==0);
+		}
+		else if (readbit(keypad_in_pin,6)==0)
+		{
+			key ='9';
+ 166:	c9 e3       	ldi	r28, 0x39	; 57
+ 168:	05 c0       	rjmp	.+10     	; 0x174 <get_key_value+0x3c>
+			while(readbit(keypad_in_pin,6)==0);
+		}
+		else if (readbit(keypad_in_pin,7)==0)
+ 16a:	cf 99       	sbic	0x19, 7	; 25
+ 16c:	03 c0       	rjmp	.+6      	; 0x174 <get_key_value+0x3c>
+		{
+			key ='/';
+			while(readbit(keypad_in_pin,7)==0);
+ 16e:	cf 9b       	sbis	0x19, 7	; 25
+ 170:	fe cf       	rjmp	.-4      	; 0x16e <get_key_value+0x36>
+			key ='9';
+			while(readbit(keypad_in_pin,6)==0);
+		}
+		else if (readbit(keypad_in_pin,7)==0)
+		{
+			key ='/';
+ 172:	cf e2       	ldi	r28, 0x2F	; 47
+			while(readbit(keypad_in_pin,7)==0);
+		}
+		switch_output(1);
+ 174:	81 e0       	ldi	r24, 0x01	; 1
+ 176:	90 e0       	ldi	r25, 0x00	; 0
+ 178:	0e 94 5b 00 	call	0xb6	; 0xb6 <switch_output>
+		if (readbit(keypad_in_pin,4)==0)
+ 17c:	cc 99       	sbic	0x19, 4	; 25
+ 17e:	04 c0       	rjmp	.+8      	; 0x188 <get_key_value+0x50>
+		{
+			key ='4';
+			while(readbit(keypad_in_pin,4)==0);
+ 180:	cc 9b       	sbis	0x19, 4	; 25
+ 182:	fe cf       	rjmp	.-4      	; 0x180 <get_key_value+0x48>
+			while(readbit(keypad_in_pin,7)==0);
+		}
+		switch_output(1);
+		if (readbit(keypad_in_pin,4)==0)
+		{
+			key ='4';
+ 184:	c4 e3       	ldi	r28, 0x34	; 52
+ 186:	11 c0       	rjmp	.+34     	; 0x1aa <get_key_value+0x72>
+			while(readbit(keypad_in_pin,4)==0);
+		}
+		else if (readbit(keypad_in_pin,5)==0)
+ 188:	cd 99       	sbic	0x19, 5	; 25
+ 18a:	04 c0       	rjmp	.+8      	; 0x194 <get_key_value+0x5c>
+		{
+			key ='5';
+			while(readbit(keypad_in_pin,5)==0);
+ 18c:	cd 9b       	sbis	0x19, 5	; 25
+ 18e:	fe cf       	rjmp	.-4      	; 0x18c <get_key_value+0x54>
+			key ='4';
+			while(readbit(keypad_in_pin,4)==0);
+		}
+		else if (readbit(keypad_in_pin,5)==0)
+		{
+			key ='5';
+ 190:	c5 e3       	ldi	r28, 0x35	; 53
+ 192:	0b c0       	rjmp	.+22     	; 0x1aa <get_key_value+0x72>
+			while(readbit(keypad_in_pin,5)==0);
+		}
+		else if (readbit(keypad_in_pin,6)==0)
+ 194:	ce 99       	sbic	0x19, 6	; 25
+ 196:	04 c0       	rjmp	.+8      	; 0x1a0 <get_key_value+0x68>
+		{
+			key ='6';
+			while(readbit(keypad_in_pin,6)==0);
+ 198:	ce 9b       	sbis	0x19, 6	; 25
+ 19a:	fe cf       	rjmp	.-4      	; 0x198 <get_key_value+0x60>
+			key ='5';
+			while(readbit(keypad_in_pin,5)==0);
+		}
+		else if (readbit(keypad_in_pin,6)==0)
+		{
+			key ='6';
+ 19c:	c6 e3       	ldi	r28, 0x36	; 54
+ 19e:	05 c0       	rjmp	.+10     	; 0x1aa <get_key_value+0x72>
+			while(readbit(keypad_in_pin,6)==0);
+		}
+		else if (readbit(keypad_in_pin,7)==0)
+ 1a0:	cf 99       	sbic	0x19, 7	; 25
+ 1a2:	03 c0       	rjmp	.+6      	; 0x1aa <get_key_value+0x72>
+		{
+			key ='*';
+			while(readbit(keypad_in_pin,7)==0);
+ 1a4:	cf 9b       	sbis	0x19, 7	; 25
+ 1a6:	fe cf       	rjmp	.-4      	; 0x1a4 <get_key_value+0x6c>
+			key ='6';
+			while(readbit(keypad_in_pin,6)==0);
+		}
+		else if (readbit(keypad_in_pin,7)==0)
+		{
+			key ='*';
+ 1a8:	ca e2       	ldi	r28, 0x2A	; 42
+			while(readbit(keypad_in_pin,7)==0);
+		}
+		switch_output(2);
+ 1aa:	82 e0       	ldi	r24, 0x02	; 2
+ 1ac:	90 e0       	ldi	r25, 0x00	; 0
+ 1ae:	0e 94 5b 00 	call	0xb6	; 0xb6 <switch_output>
+		if (readbit(keypad_in_pin,4)==0)
+ 1b2:	cc 99       	sbic	0x19, 4	; 25
+ 1b4:	04 c0       	rjmp	.+8      	; 0x1be <get_key_value+0x86>
+		{
+			key ='1';
+			while(readbit(keypad_in_pin,4)==0);
+ 1b6:	cc 9b       	sbis	0x19, 4	; 25
+ 1b8:	fe cf       	rjmp	.-4      	; 0x1b6 <get_key_value+0x7e>
+			while(readbit(keypad_in_pin,7)==0);
+		}
+		switch_output(2);
+		if (readbit(keypad_in_pin,4)==0)
+		{
+			key ='1';
+ 1ba:	c1 e3       	ldi	r28, 0x31	; 49
+ 1bc:	11 c0       	rjmp	.+34     	; 0x1e0 <get_key_value+0xa8>
+			while(readbit(keypad_in_pin,4)==0);
+		}
+		else if (readbit(keypad_in_pin,5)==0)
+ 1be:	cd 99       	sbic	0x19, 5	; 25
+ 1c0:	04 c0       	rjmp	.+8      	; 0x1ca <get_key_value+0x92>
+		{
+			key ='2';
+			while(readbit(keypad_in_pin,5)==0);
+ 1c2:	cd 9b       	sbis	0x19, 5	; 25
+ 1c4:	fe cf       	rjmp	.-4      	; 0x1c2 <get_key_value+0x8a>
+			key ='1';
+			while(readbit(keypad_in_pin,4)==0);
+		}
+		else if (readbit(keypad_in_pin,5)==0)
+		{
+			key ='2';
+ 1c6:	c2 e3       	ldi	r28, 0x32	; 50
+ 1c8:	0b c0       	rjmp	.+22     	; 0x1e0 <get_key_value+0xa8>
+			while(readbit(keypad_in_pin,5)==0);
+		}
+		else if (readbit(keypad_in_pin,6)==0)
+ 1ca:	ce 99       	sbic	0x19, 6	; 25
+ 1cc:	04 c0       	rjmp	.+8      	; 0x1d6 <get_key_value+0x9e>
+		{
+			key ='3';
+			while(readbit(keypad_in_pin,6)==0);
+ 1ce:	ce 9b       	sbis	0x19, 6	; 25
+ 1d0:	fe cf       	rjmp	.-4      	; 0x1ce <get_key_value+0x96>
+			key ='2';
+			while(readbit(keypad_in_pin,5)==0);
+		}
+		else if (readbit(keypad_in_pin,6)==0)
+		{
+			key ='3';
+ 1d2:	c3 e3       	ldi	r28, 0x33	; 51
+ 1d4:	05 c0       	rjmp	.+10     	; 0x1e0 <get_key_value+0xa8>
+			while(readbit(keypad_in_pin,6)==0);
+		}
+		else if (readbit(keypad_in_pin,7)==0)
+ 1d6:	cf 99       	sbic	0x19, 7	; 25
+ 1d8:	03 c0       	rjmp	.+6      	; 0x1e0 <get_key_value+0xa8>
+		{
+			key ='-';
+			while(readbit(keypad_in_pin,7)==0);
+ 1da:	cf 9b       	sbis	0x19, 7	; 25
+ 1dc:	fe cf       	rjmp	.-4      	; 0x1da <get_key_value+0xa2>
+			key ='3';
+			while(readbit(keypad_in_pin,6)==0);
+		}
+		else if (readbit(keypad_in_pin,7)==0)
+		{
+			key ='-';
+ 1de:	cd e2       	ldi	r28, 0x2D	; 45
+			while(readbit(keypad_in_pin,7)==0);
+		}
+		switch_output(3);
+ 1e0:	83 e0       	ldi	r24, 0x03	; 3
+ 1e2:	90 e0       	ldi	r25, 0x00	; 0
+ 1e4:	0e 94 5b 00 	call	0xb6	; 0xb6 <switch_output>
+		if (readbit(keypad_in_pin,4)==0)
+ 1e8:	cc 99       	sbic	0x19, 4	; 25
+ 1ea:	04 c0       	rjmp	.+8      	; 0x1f4 <get_key_value+0xbc>
+		{
+			key ='C';
+			while(readbit(keypad_in_pin,4)==0);
+ 1ec:	cc 9b       	sbis	0x19, 4	; 25
+ 1ee:	fe cf       	rjmp	.-4      	; 0x1ec <get_key_value+0xb4>
+			while(readbit(keypad_in_pin,7)==0);
+		}
+		switch_output(3);
+		if (readbit(keypad_in_pin,4)==0)
+		{
+			key ='C';
+ 1f0:	c3 e4       	ldi	r28, 0x43	; 67
+ 1f2:	11 c0       	rjmp	.+34     	; 0x216 <get_key_value+0xde>
+			while(readbit(keypad_in_pin,4)==0);
+		}
+		else if (readbit(keypad_in_pin,5)==0)
+ 1f4:	cd 99       	sbic	0x19, 5	; 25
+ 1f6:	04 c0       	rjmp	.+8      	; 0x200 <get_key_value+0xc8>
+		{
+			key ='0';
+			while(readbit(keypad_in_pin,5)==0);
+ 1f8:	cd 9b       	sbis	0x19, 5	; 25
+ 1fa:	fe cf       	rjmp	.-4      	; 0x1f8 <get_key_value+0xc0>
+			key ='C';
+			while(readbit(keypad_in_pin,4)==0);
+		}
+		else if (readbit(keypad_in_pin,5)==0)
+		{
+			key ='0';
+ 1fc:	c0 e3       	ldi	r28, 0x30	; 48
+ 1fe:	0b c0       	rjmp	.+22     	; 0x216 <get_key_value+0xde>
+			while(readbit(keypad_in_pin,5)==0);
+		}
+		else if (readbit(keypad_in_pin,6)==0)
+ 200:	ce 99       	sbic	0x19, 6	; 25
+ 202:	04 c0       	rjmp	.+8      	; 0x20c <get_key_value+0xd4>
+		{
+			key ='=';
+			while(readbit(keypad_in_pin,6)==0);
+ 204:	ce 9b       	sbis	0x19, 6	; 25
+ 206:	fe cf       	rjmp	.-4      	; 0x204 <get_key_value+0xcc>
+			key ='0';
+			while(readbit(keypad_in_pin,5)==0);
+		}
+		else if (readbit(keypad_in_pin,6)==0)
+		{
+			key ='=';
+ 208:	cd e3       	ldi	r28, 0x3D	; 61
+ 20a:	05 c0       	rjmp	.+10     	; 0x216 <get_key_value+0xde>
+			while(readbit(keypad_in_pin,6)==0);
+		}
+		else if (readbit(keypad_in_pin,7)==0)
+ 20c:	cf 99       	sbic	0x19, 7	; 25
+ 20e:	03 c0       	rjmp	.+6      	; 0x216 <get_key_value+0xde>
+		{
+			key ='+';
+			while(readbit(keypad_in_pin,7)==0);
+ 210:	cf 9b       	sbis	0x19, 7	; 25
+ 212:	fe cf       	rjmp	.-4      	; 0x210 <get_key_value+0xd8>
+			key ='=';
+			while(readbit(keypad_in_pin,6)==0);
+		}
+		else if (readbit(keypad_in_pin,7)==0)
+		{
+			key ='+';
+ 214:	cb e2       	ldi	r28, 0x2B	; 43
+char get_key_value(void)
+{
+	char key = notpressed; // 255 
+	
+	
+	while(key == notpressed)// key = '1' break condition 
+ 216:	cf 3f       	cpi	r28, 0xFF	; 255
+ 218:	09 f4       	brne	.+2      	; 0x21c <get_key_value+0xe4>
+ 21a:	91 cf       	rjmp	.-222    	; 0x13e <get_key_value+0x6>
+			while(readbit(keypad_in_pin,7)==0);
+		}
+	}
+	return key;
+	
+ 21c:	8c 2f       	mov	r24, r28
+ 21e:	cf 91       	pop	r28
+ 220:	08 95       	ret
+
+00000222 <LCD_send_data_4bit>:
+	while(str[count]!=0)
+	{
+		LCD_send_data_4bit(str[count]);
+		count++;
+	}
+}
+ 222:	95 b3       	in	r25, 0x15	; 21
+ 224:	9f 70       	andi	r25, 0x0F	; 15
+ 226:	28 2f       	mov	r18, r24
+ 228:	20 7f       	andi	r18, 0xF0	; 240
+ 22a:	92 2b       	or	r25, r18
+ 22c:	95 bb       	out	0x15, r25	; 21
+ 22e:	92 b3       	in	r25, 0x12	; 18
+ 230:	92 60       	ori	r25, 0x02	; 2
+ 232:	92 bb       	out	0x12, r25	; 18
+ 234:	92 b3       	in	r25, 0x12	; 18
+ 236:	9b 7f       	andi	r25, 0xFB	; 251
+ 238:	92 bb       	out	0x12, r25	; 18
+ 23a:	92 b3       	in	r25, 0x12	; 18
+ 23c:	98 60       	ori	r25, 0x08	; 8
+ 23e:	92 bb       	out	0x12, r25	; 18
+ 240:	00 00       	nop
+ 242:	92 b3       	in	r25, 0x12	; 18
+ 244:	97 7f       	andi	r25, 0xF7	; 247
+ 246:	92 bb       	out	0x12, r25	; 18
+ 248:	32 e4       	ldi	r19, 0x42	; 66
+ 24a:	3a 95       	dec	r19
+ 24c:	f1 f7       	brne	.-4      	; 0x24a <LCD_send_data_4bit+0x28>
+ 24e:	00 c0       	rjmp	.+0      	; 0x250 <LCD_send_data_4bit+0x2e>
+ 250:	25 b3       	in	r18, 0x15	; 21
+ 252:	30 e1       	ldi	r19, 0x10	; 16
+ 254:	83 9f       	mul	r24, r19
+ 256:	c0 01       	movw	r24, r0
+ 258:	11 24       	eor	r1, r1
+ 25a:	92 2f       	mov	r25, r18
+ 25c:	9f 70       	andi	r25, 0x0F	; 15
+ 25e:	89 2b       	or	r24, r25
+ 260:	85 bb       	out	0x15, r24	; 21
+ 262:	82 b3       	in	r24, 0x12	; 18
+ 264:	88 60       	ori	r24, 0x08	; 8
+ 266:	82 bb       	out	0x12, r24	; 18
+ 268:	00 00       	nop
+ 26a:	82 b3       	in	r24, 0x12	; 18
+ 26c:	87 7f       	andi	r24, 0xF7	; 247
+ 26e:	82 bb       	out	0x12, r24	; 18
+ 270:	89 ef       	ldi	r24, 0xF9	; 249
+ 272:	90 e0       	ldi	r25, 0x00	; 0
+ 274:	01 97       	sbiw	r24, 0x01	; 1
+ 276:	f1 f7       	brne	.-4      	; 0x274 <LCD_send_data_4bit+0x52>
+ 278:	00 c0       	rjmp	.+0      	; 0x27a <LCD_send_data_4bit+0x58>
+ 27a:	00 00       	nop
+ 27c:	08 95       	ret
+
+0000027e <LCD_send_command_4bit>:
+ 27e:	95 b3       	in	r25, 0x15	; 21
+ 280:	9f 70       	andi	r25, 0x0F	; 15
+ 282:	28 2f       	mov	r18, r24
+ 284:	20 7f       	andi	r18, 0xF0	; 240
+ 286:	92 2b       	or	r25, r18
+ 288:	95 bb       	out	0x15, r25	; 21
+ 28a:	92 b3       	in	r25, 0x12	; 18
+ 28c:	9d 7f       	andi	r25, 0xFD	; 253
+ 28e:	92 bb       	out	0x12, r25	; 18
+ 290:	92 b3       	in	r25, 0x12	; 18
+ 292:	9b 7f       	andi	r25, 0xFB	; 251
+ 294:	92 bb       	out	0x12, r25	; 18
+ 296:	92 b3       	in	r25, 0x12	; 18
+ 298:	98 60       	ori	r25, 0x08	; 8
+ 29a:	92 bb       	out	0x12, r25	; 18
+ 29c:	00 00       	nop
+ 29e:	92 b3       	in	r25, 0x12	; 18
+ 2a0:	97 7f       	andi	r25, 0xF7	; 247
+ 2a2:	92 bb       	out	0x12, r25	; 18
+ 2a4:	32 e4       	ldi	r19, 0x42	; 66
+ 2a6:	3a 95       	dec	r19
+ 2a8:	f1 f7       	brne	.-4      	; 0x2a6 <LCD_send_command_4bit+0x28>
+ 2aa:	00 c0       	rjmp	.+0      	; 0x2ac <LCD_send_command_4bit+0x2e>
+ 2ac:	25 b3       	in	r18, 0x15	; 21
+ 2ae:	30 e1       	ldi	r19, 0x10	; 16
+ 2b0:	83 9f       	mul	r24, r19
+ 2b2:	c0 01       	movw	r24, r0
+ 2b4:	11 24       	eor	r1, r1
+ 2b6:	92 2f       	mov	r25, r18
+ 2b8:	9f 70       	andi	r25, 0x0F	; 15
+ 2ba:	89 2b       	or	r24, r25
+ 2bc:	85 bb       	out	0x15, r24	; 21
+ 2be:	82 b3       	in	r24, 0x12	; 18
+ 2c0:	88 60       	ori	r24, 0x08	; 8
+ 2c2:	82 bb       	out	0x12, r24	; 18
+ 2c4:	00 00       	nop
+ 2c6:	82 b3       	in	r24, 0x12	; 18
+ 2c8:	87 7f       	andi	r24, 0xF7	; 247
+ 2ca:	82 bb       	out	0x12, r24	; 18
+ 2cc:	89 ef       	ldi	r24, 0xF9	; 249
+ 2ce:	90 e0       	ldi	r25, 0x00	; 0
+ 2d0:	01 97       	sbiw	r24, 0x01	; 1
+ 2d2:	f1 f7       	brne	.-4      	; 0x2d0 <LCD_send_command_4bit+0x52>
+ 2d4:	00 c0       	rjmp	.+0      	; 0x2d6 <LCD_send_command_4bit+0x58>
+ 2d6:	00 00       	nop
+ 2d8:	08 95       	ret
+
+000002da <LCD_INIT_4bit>:
+ 2da:	84 b3       	in	r24, 0x14	; 20
+ 2dc:	80 6f       	ori	r24, 0xF0	; 240
+ 2de:	84 bb       	out	0x14, r24	; 20
+ 2e0:	81 b3       	in	r24, 0x11	; 17
+ 2e2:	88 60       	ori	r24, 0x08	; 8
+ 2e4:	81 bb       	out	0x11, r24	; 17
+ 2e6:	81 b3       	in	r24, 0x11	; 17
+ 2e8:	82 60       	ori	r24, 0x02	; 2
+ 2ea:	81 bb       	out	0x11, r24	; 17
+ 2ec:	81 b3       	in	r24, 0x11	; 17
+ 2ee:	84 60       	ori	r24, 0x04	; 4
+ 2f0:	81 bb       	out	0x11, r24	; 17
+ 2f2:	82 e0       	ldi	r24, 0x02	; 2
+ 2f4:	0e 94 3f 01 	call	0x27e	; 0x27e <LCD_send_command_4bit>
+ 2f8:	88 e2       	ldi	r24, 0x28	; 40
+ 2fa:	0e 94 3f 01 	call	0x27e	; 0x27e <LCD_send_command_4bit>
+ 2fe:	8c e0       	ldi	r24, 0x0C	; 12
+ 300:	0e 94 3f 01 	call	0x27e	; 0x27e <LCD_send_command_4bit>
+ 304:	86 e0       	ldi	r24, 0x06	; 6
+ 306:	0e 94 3f 01 	call	0x27e	; 0x27e <LCD_send_command_4bit>
+ 30a:	81 e0       	ldi	r24, 0x01	; 1
+ 30c:	0e 94 3f 01 	call	0x27e	; 0x27e <LCD_send_command_4bit>
+ 310:	87 e8       	ldi	r24, 0x87	; 135
+ 312:	93 e1       	ldi	r25, 0x13	; 19
+ 314:	01 97       	sbiw	r24, 0x01	; 1
+ 316:	f1 f7       	brne	.-4      	; 0x314 <LCD_INIT_4bit+0x3a>
+ 318:	00 c0       	rjmp	.+0      	; 0x31a <LCD_INIT_4bit+0x40>
+ 31a:	00 00       	nop
+ 31c:	08 95       	ret
+
+0000031e <main>:
+
+
+int main()
+{
+		
+	LCD_INIT_4bit(); // init lcd 
+ 31e:	0e 94 6d 01 	call	0x2da	; 0x2da <LCD_INIT_4bit>
+    keypad_init(); // define key pad   //1// 
+ 322:	0e 94 36 00 	call	0x6c	; 0x6c <keypad_init>
+	//_delay_ms(2000);
+	
+	while(1)
+	{
+		//keypad 
+/*2-*/	unsigned char k=get_key_value();
+ 326:	0e 94 9c 00 	call	0x138	; 0x138 <get_key_value>
+		////////////////////////////
+		
+		LCD_send_data_4bit(k);
+ 32a:	0e 94 11 01 	call	0x222	; 0x222 <LCD_send_data_4bit>
+ 32e:	fb cf       	rjmp	.-10     	; 0x326 <main+0x8>
+
+00000330 <_exit>:
+ 330:	f8 94       	cli
+
+00000332 <__stop_program>:
+ 332:	ff cf       	rjmp	.-2      	; 0x332 <__stop_program>
